@@ -8,5 +8,5 @@ setup(
 	license='The MIT License',
 	author='Paymentwall Team',
 	author_email='devsupport@paymentwall.com',
-	description='Python Integration Library'
+	description='Paymentwall Python Library'
 )
