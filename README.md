@@ -13,8 +13,10 @@ To open your merchant account and set up an application, you can [sign up here](
 #Installation
 <em><b>Python 3.2.0 or higher is required.</b></em>
 
-PIP installation section
+To install using <code>pip</code> run:
+
   <code>pip install paymentwall-python</code>
+  
 
 To install from source run:
 
