@@ -54,6 +54,7 @@ widget = Widget(
     [product],    # product details for Flexible Widget Call. To let users select the product on Paymentwall's end, leave this array empty
     {'email': 'user@hostname.com'}    # additional parameters
 )
+print(widget.get_html_code())
 </code></pre>
 
 ####Pingback Processing
@@ -106,7 +107,7 @@ if pingback.validate():
         pass 
   print('OK') # Paymentwall expects response to be OK, otherwise the pingback will be resent
 else:
-  print(pingback.getErrorSummary())
+  print(pingback.get_error_summary())
 end</code></pre>
 
 ##Cart API
@@ -142,5 +143,5 @@ if pingback.validate():
         pass 
   print('OK') # Paymentwall expects response to be OK, otherwise the pingback will be resent
 else:
-  print(pingback.getErrorSummary())
+  print(pingback.get_error_summary())
 end</code></pre>
