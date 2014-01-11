@@ -1,14 +1,14 @@
 #About Paymentwall
-[Paymentwall](http://paymentwall.com/?source=gh) is the leading digital payments platform for globally monetizing digital goods and services. Paymentwall assists game publishers, dating sites, rewards sites, SaaS companies and many other verticals to monetize their digital content and services. 
+[Paymentwall](http://paymentwall.com/?source=gh-py) is the leading digital payments platform for globally monetizing digital goods and services. Paymentwall assists game publishers, dating sites, rewards sites, SaaS companies and many other verticals to monetize their digital content and services. 
 Merchants can plugin Paymentwall's API to accept payments from over 100 different methods including credit cards, debit cards, bank transfers, SMS/Mobile payments, prepaid cards, eWallets, landline payments and others. 
 
-To sign up for a Paymentwall Merchant Account, [click here](http://paymentwall.com/signup/merchant?source=gh).
+To sign up for a Paymentwall Merchant Account, [click here](http://paymentwall.com/signup/merchant?source=gh-py).
 
 #Paymentwall Python Library
-This library allows developers to use [Paymentwall APIs](http://paymentwall.com/en/documentation/API-Documentation/722?source=gh) (Virtual Currency, Digital Goods featuring recurring billing, and Virtual Cart).
+This library allows developers to use [Paymentwall APIs](http://paymentwall.com/en/documentation/API-Documentation/722?source=gh-py) (Virtual Currency, Digital Goods featuring recurring billing, and Virtual Cart).
 
 To use Paymentwall, all you need to do is to sign up for a Paymentwall Merchant Account so you can setup an Application designed for your site.
-To open your merchant account and set up an application, you can [sign up here](http://paymentwall.com/signup/merchant?source=gh).
+To open your merchant account and set up an application, you can [sign up here](http://paymentwall.com/signup/merchant?source=gh-py).
 
 #Installation
 <em><b>Python 3.2.0 or higher is required.</b></em>

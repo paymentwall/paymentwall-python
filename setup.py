@@ -1,12 +1,17 @@
-from distutils.core import setup
+import os
+from setuptools import setup
+
+def read(fname):
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
 	name='paymentwall-python',
 	version='1.0.0',
 	packages=['paymentwall'],
 	url='http://www.paymentwall.com',
-	license='The MIT License',
+	description='Paymentwall Python Library',
+	long_description=read('README.md'),
+	license='MIT',
 	author='Paymentwall Team',
-	author_email='devsupport@paymentwall.com',
-	description='Paymentwall Python Library'
+	author_email='devsupport@paymentwall.com'
 )
