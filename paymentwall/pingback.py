@@ -94,7 +94,7 @@ class Pingback(Paymentwall):
 				return None
 
 			if type_parameter in [self.PINGBACK_TYPE_REGULAR, self.PINGBACK_TYPE_GOODWILL, self.PINGBACK_TYPE_NEGATIVE]:
-				return self.parameters['type']
+				return type_parameter
 
 	def get_user_id(self):
 		return self.get_parameter('uid')
