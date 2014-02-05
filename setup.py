@@ -6,7 +6,7 @@ def read(fname):
 
 setup(
 	name='paymentwall-python',
-	version='1.0.2',
+	version='1.0.3',
 	packages=['paymentwall'],
 	url='http://www.paymentwall.com',
 	description='Paymentwall Python Library',
