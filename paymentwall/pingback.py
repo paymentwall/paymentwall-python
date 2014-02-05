@@ -1,7 +1,10 @@
 from paymentwall.base import Paymentwall
 from paymentwall.product import Product
 
-import collections
+try:
+	import collections
+except ImportError:
+	import ordereddict
 
 
 class Pingback(Paymentwall):
@@ -33,7 +36,10 @@ class Pingback(Paymentwall):
 		return validated
 
 	def is_signature_valid(self):
-		signature_params_to_sign = collections.OrderedDict()
+		try:
+			signature_params_to_sign = collections.OrderedDict()
+		except StandardError:
+			signature_params_to_sign = ordereddict.OrderedDict()
 
 		if self.get_api_type() == self.API_VC:
 			signature_params = ['uid', 'currency', 'type', 'ref']
@@ -106,10 +112,16 @@ class Pingback(Paymentwall):
 		return self.get_parameter('goodsid')
 
 	def get_product_period_length(self):
-		return self.get_parameter('slength')
+		try:
+			return int(self.parameters['slength'])
+		except ValueError:
+			return None
 
 	def get_product_period_type(self):
-		return self.get_parameter('speriod')
+		try:
+			return int(self.parameters['speriod'])
+		except ValueError:
+			return None
 
 	def get_product(self):
 		return Product(
@@ -117,8 +129,8 @@ class Pingback(Paymentwall):
 			0,
 			None,
 			None,
-			Product.TYPE_SUBSCRIPTION if int(self.get_product_period_length()) > 0 else Product.TYPE_FIXED,
-			int(self.get_product_period_length()),
+			Product.TYPE_SUBSCRIPTION if self.get_product_period_length() > 0 else Product.TYPE_FIXED,
+			self.get_product_period_length(),
 			self.get_product_period_type()
 		)
 

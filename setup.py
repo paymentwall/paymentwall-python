@@ -2,8 +2,7 @@ import os
 from distutils.core import setup
 
 def read(fname):
-    result = open(os.path.join(os.path.dirname(__file__), fname)).read()
-    return result
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
 	name='paymentwall-python',

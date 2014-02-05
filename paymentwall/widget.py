@@ -2,7 +2,11 @@ from paymentwall.base import Paymentwall
 from paymentwall.product import Product
 
 import re
-import urllib.parse
+
+try:
+	from urllib.parse import urlencode
+except ImportError:
+	from urllib import urlencode
 
 
 class Widget(Paymentwall):
@@ -87,7 +91,7 @@ class Widget(Paymentwall):
 
 		params['sign'] = self.calculate_signature(params, self.get_secret_key(), int(signature_version))
 
-		return self.BASE_URL + '/' + self.build_controller(self.widget_code) + '?' + urllib.parse.urlencode(params)
+		return self.BASE_URL + '/' + self.build_controller(self.widget_code) + '?' + urlencode(params)
 
 	def get_html_code(self, attributes={}):
 		default_attributes = {

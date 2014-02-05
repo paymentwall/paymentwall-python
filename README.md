@@ -11,16 +11,17 @@ To use Paymentwall, all you need to do is to sign up for a Paymentwall Merchant 
 To open your merchant account and set up an application, you can [sign up here](http://paymentwall.com/signup/merchant?source=gh-py).
 
 #Installation
-<em><b>Python 3.2.0 or higher is required.</b></em>
-
 To install using <code>pip</code> run:
 
   <code>pip install paymentwall-python</code>
-  
+
+<b>Notice:</b> If you are using <em>Python 2.6</em> please run the following command, too:
+
+  <code>pip install ordereddict</code>
 
 To install from source run:
 
-  <code>python3 setup.py install</code>
+  <code>python setup.py install</code>
 
 Then use a code sample below.
 
@@ -74,7 +75,7 @@ if pingback.validate():
         # withdraw the product
         pass
 
-	print('OK') # Paymentwall expects response to be OK, otherwise the pingback will be resent
+    print('OK') # Paymentwall expects response to be OK, otherwise the pingback will be resent
 
 else:
     print(pingback.get_error_summary())</code></pre>
@@ -125,7 +126,7 @@ Paymentwall.set_secret_key('SECRET_KEY')
 ####Widget Call
 <pre><code>widget = Widget(
 	'user40012', # id of the end-user who's making the payment
-	'p1_1',      # widget code, e.g. p1; can be picked inside of your merchant account,
+	'p1_1',      # widget code, e.g. p1; can be picked inside of your merchant account
 	[
 		Product('product301', 3.33, 'EUR'), # first product in cart
 		Product('product607', 7.77, 'EUR')  # second product in cart
