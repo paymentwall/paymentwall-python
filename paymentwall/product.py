@@ -21,6 +21,8 @@ class Product:
 		self.recurring = recurring
 		if product_type == self.TYPE_SUBSCRIPTION and recurring and recurring != 0:
 			self.trial_product = trial_product
+		else:
+			self.trial_product = trial_product
 
 	def get_id(self):
 		return self.product_id
