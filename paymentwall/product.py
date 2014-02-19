@@ -19,8 +19,7 @@ class Product:
 		self.period_length = period_length
 		self.period_type = period_type
 		self.recurring = recurring
-		if product_type == self.TYPE_SUBSCRIPTION and recurring and recurring != 0:
-			self.trial_product = trial_product
+		self.trial_product = trial_product if self.TYPE_SUBSCRIPTION and recurring and recurring != 0 else None
 
 	def get_id(self):
 		return self.product_id
