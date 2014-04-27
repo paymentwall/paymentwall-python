@@ -148,7 +148,7 @@ class Pingback(Paymentwall):
 		return self.get_parameter('ref')
 
 	def get_pingback_unique_id(self):
-		return self.get_reference_id() + '_' + self.get_type()
+		return self.get_reference_id() + '_' + str(self.get_type())
 
 	def is_deliverable(self):
 		return self.get_type() == self.PINGBACK_TYPE_REGULAR or self.get_type() == self.PINGBACK_TYPE_GOODWILL
