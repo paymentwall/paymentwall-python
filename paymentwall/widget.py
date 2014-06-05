@@ -120,6 +120,7 @@ class Widget(Paymentwall):
 		else:
 			return self.CART_CONTROLLER
 
+	@classmethod
 	def calculate_signature(self, params, secret, version):
 		base_string = ''
 		is_array = lambda var: isinstance(var, (list, tuple))
