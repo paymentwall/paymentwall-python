@@ -165,7 +165,7 @@ class Pingback(Paymentwall):
 		if 'sig' in params:
 			del params['sig']
 
-		sortable = (int(version) == self.SIGNATURE_VERSION_2)
+		sortable = (int(version) in [self.SIGNATURE_VERSION_2, self.SIGNATURE_VERSION_3])
 		keys = list(sorted(params.keys())) if sortable else list(params.keys())
 
 		for k in range(len(keys)):
