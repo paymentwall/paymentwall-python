@@ -31,7 +31,10 @@ class Product:
 		return self.currency_code
 
 	def get_name(self):
-		return self.name
+		if self.name:
+			return self.name.encode('utf-8')
+
+		return None
 
 	def get_type(self):
 		return self.product_type
