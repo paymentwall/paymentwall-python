@@ -22,7 +22,9 @@ class Widget(Paymentwall):
 	def get_default_widget_signature(self):
 		return self.DEFAULT_SIGNATURE_VERSION if self.get_api_type() != self.API_CART else self.SIGNATURE_VERSION_2
 
-	def get_url(self):
+	def get_params(self):
+		"""Get signature and params
+		"""
 		params = {
 			'key': self.get_app_key(),
 			'uid': self.user_id,
@@ -90,8 +92,10 @@ class Widget(Paymentwall):
 		params = self.array_merge(params, self.extra_params)
 
 		params['sign'] = self.calculate_signature(params, self.get_secret_key(), int(signature_version))
+		return params
 
-		return self.BASE_URL + '/' + self.build_controller(self.widget_code) + '?' + urlencode(params)
+	def get_url(self):
+		return self.BASE_URL + '/' + self.build_controller(self.widget_code) + '?' + urlencode(self.get_params())
 
 	def get_html_code(self, attributes={}):
 		default_attributes = {
