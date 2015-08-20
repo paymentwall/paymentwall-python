@@ -158,7 +158,7 @@ class Pingback(Paymentwall):
 		return self.get_reference_id() + '_' + str(self.get_type())
 
 	def is_deliverable(self):
-		return self.get_type() == self.PINGBACK_TYPE_REGULAR or self.get_type() == self.PINGBACK_TYPE_GOODWILL or self.get_type() == PINGBACK_TYPE_RISK_REVIEWED_ACCEPTED
+		return self.get_type() == self.PINGBACK_TYPE_REGULAR or self.get_type() == self.PINGBACK_TYPE_GOODWILL or self.get_type() == self.PINGBACK_TYPE_RISK_REVIEWED_ACCEPTED
 
 	def is_cancelable(self):
 		return self.get_type() == self.PINGBACK_TYPE_NEGATIVE or self.get_type() == self.PINGBACK_TYPE_RISK_REVIEWED_DECLINED
