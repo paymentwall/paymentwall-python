@@ -12,6 +12,14 @@ class Pingback(Paymentwall):
 	PINGBACK_TYPE_REGULAR = 0
 	PINGBACK_TYPE_GOODWILL = 1
 	PINGBACK_TYPE_NEGATIVE = 2
+	
+	PINGBACK_TYPE_RISK_UNDER_REVIEW = 200;
+	PINGBACK_TYPE_RISK_REVIEWED_ACCEPTED = 201;
+	PINGBACK_TYPE_RISK_REVIEWED_DECLINED = 202;
+	
+	PINGBACK_TYPE_SUBSCRIPTION_CANCELLATION = 12;
+	PINGBACK_TYPE_SUBSCRIPTION_EXPIRED = 13;
+	PINGBACK_TYPE_SUBSCRIPTION_PAYMENT_FAILED = 14;
 
 	def __init__(self, parameters = {}, ip_address=''):
 		self.parameters = parameters
@@ -99,8 +107,7 @@ class Pingback(Paymentwall):
 			except ValueError:
 				return None
 
-			if type_parameter in [self.PINGBACK_TYPE_REGULAR, self.PINGBACK_TYPE_GOODWILL, self.PINGBACK_TYPE_NEGATIVE]:
-				return type_parameter
+			return type_parameter
 
 	def get_user_id(self):
 		return self.get_parameter('uid')
@@ -151,10 +158,13 @@ class Pingback(Paymentwall):
 		return self.get_reference_id() + '_' + str(self.get_type())
 
 	def is_deliverable(self):
-		return self.get_type() == self.PINGBACK_TYPE_REGULAR or self.get_type() == self.PINGBACK_TYPE_GOODWILL
+		return self.get_type() == self.PINGBACK_TYPE_REGULAR or self.get_type() == self.PINGBACK_TYPE_GOODWILL or self.get_type() == PINGBACK_TYPE_RISK_REVIEWED_ACCEPTED
 
 	def is_cancelable(self):
-		return self.get_type() == self.PINGBACK_TYPE_NEGATIVE
+		return self.get_type() == self.PINGBACK_TYPE_NEGATIVE or self.get_type() == self.PINGBACK_TYPE_RISK_REVIEWED_DECLINED
+		
+	def is_under_review(self):
+		return self.get_type() == self.PINGBACK_TYPE_RISK_UNDER_REVIEW
 
 	def calculate_signature(self, params, secret, version):
 		base_string = ''
