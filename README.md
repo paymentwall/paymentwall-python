@@ -64,7 +64,7 @@ print(widget.get_html_code())
 ####Pingback Processing
 
 The Pingback is a webhook notifying about a payment being made. Pingbacks are sent via HTTP/HTTPS to your servers. To process pingbacks use the following code:
-<pre><code>pingback = Pingback(<em>request_params</em>, <em>request_ip_address</em>)
+<pre><code>pingback = Pingback({x:y for x, y in request.args.iteritems()}, request.remote_addr)
 
 if pingback.validate():
     product_id = pingback.get_product().get_id()
@@ -100,7 +100,7 @@ print(widget.get_html_code())
 </code></pre>
 
 ####Pingback Processing
-<pre><code>pingback = Pingback(<em>request_params</em>, <em>request_ip_address</em>)
+<pre><code>pingback = Pingback({x:y for x, y in request.args.iteritems()}, request.remote_addr)
 if pingback.validate():
     virtual_currency = pingback.get_vc_amount()
     if pingback.is_deliverable():
@@ -136,7 +136,7 @@ Paymentwall.set_secret_key('SECRET_KEY')
 print(widget.get_html_code())</code></pre>
 
 ####Pingback Processing
-<pre><code>pingback = Pingback(<em>request_params</em>, <em>request_ip_address</em>)
+<pre><code>pingback = Pingback({x:y for x, y in request.args.iteritems()}, request.remote_addr)
 if pingback.validate():
     products = pingback.get_products()
     if pingback.is_deliverable():
