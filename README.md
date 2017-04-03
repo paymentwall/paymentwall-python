@@ -54,7 +54,7 @@ The widget is a payment page hosted by Paymentwall that embeds the entire paymen
 
 widget = Widget(
     'user4522',   # id of the end-user who's making the payment
-    'p1_1',       # widget code, e.g. p1; can be picked inside of your merchant account
+    'fp',       # widget code, e.g. fp; can be picked inside of your merchant account
     [product],    # product details for Flexible Widget Call. To let users select the product on Paymentwall's end, leave this array empty
     {'email': 'user@hostname.com'}    # additional parameters
 )
