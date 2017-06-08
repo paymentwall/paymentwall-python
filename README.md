@@ -149,3 +149,91 @@ if pingback.validate():
 else:
   print(pingback.get_error_summary())
 end</code></pre>
+
+
+## Django implementation / example
+
+#### Initializing Paymentwall & returning a response url
+<pre><code>
+Paymentwall.set_api_type(Paymentwall.API_GOODS)
+Paymentwall.set_app_key(self.app_key)
+Paymentwall.set_secret_key(self.secret_key)
+
+product = Product(
+    cart.pk,  # cart id
+    cart.final_total,  # total price
+    cart.currency.code,  # currency
+    'My product,  # name of product
+    Product.TYPE_FIXED,  # payment type ( fixed or subscription)
+    0,  # duration if subscription
+    None,  # days, weeks, months interval
+    False,  # recurring true or false.
+)
+
+extra_params = {'success_url': '{}{}'.format(cart.market.get_url, reverse('checkout-complete'))}
+
+widget = Widget(cart.player.username, 'p1_1', [product])
+return widget.get_url()
+</code></pre>
+
+#### Pingback Processing
+<pre><code>
+@method_decorator(csrf_exempt, name='dispatch')
+class PaymentwallCallbackView(View):
+
+    CHARGEBACK = '1'
+    CREDIT_CARD_FRAUD = '2'
+    ORDER_FRAUD = '3'
+    BAD_DATA = '4'
+    FAKE_PROXY_USER = '5'
+    REJECTED_BY_ADVERTISER = '6'
+    DUPLICATED_CONVERSIONS = '7'
+    GOODWILL_CREDIT_TAKEN_BACK = '8'
+    CANCELLED_ORDER = '9'
+    PARTIALLY_REVERSED = '10'
+
+    def get_request_ip(self):
+        return get_client_ip(self.request)
+
+    def get(self, request, *args, **kwargs):
+        pingback = Pingback(request.GET.copy(), self.get_request_ip())
+
+        if pingback.validate():
+            cart_id = pingback.get_product().get_id()
+
+            try:
+                cart = CartModel.objects.get(pk=cart_id)
+            except CartModel.DoesNotExist:
+                log.error('Paymentwall pingback: Cant find cart, Paymentwall sent this data: {}'.format(request.GET.copy()))
+                return HttpResponse(status=403)
+
+            try:
+                purchase = Purchase.objects.get(transaction_id=pingback.get_reference_id())
+            except Purchase.DoesNotExist:
+                purchase = cart.create_purchase(transaction_id=pingback.get_reference_id())
+
+            if pingback.is_deliverable():
+                purchase.status = Purchase.COMPLETE
+
+            elif pingback.is_cancelable():
+                reason = pingback.get_parameter('reason')
+
+                if reason == self.CHARGEBACK or reason == self.CREDIT_CARD_FRAUD or reason == self.ORDER_FRAUD or reason == self.PARTIALLY_REVERSED:
+                    purchase.status = Purchase.CHARGEBACK
+                elif reason == self.CANCELLED_ORDER:
+                    purchase.status = Purchase.REFUNDED
+                else:
+                    purchase.status = Purchase.ERROR
+
+            elif pingback.is_under_review():
+                purchase.status = Purchase.PENDING
+
+            else:
+                log.error('Paymentwall pingback: Unknown pingback type, Paymentwall sent this data: {}'.format(request.GET.copy()))
+
+            purchase.save()
+            return HttpResponse('OK', status=200)
+        else:
+            log.error('Paymentwall pingback: Cant validate pingback, error: {} Paymentwall sent this data: {}'.format(pingback.get_error_summary(), request.GET.copy()))
+
+</code></pre>
