@@ -32,7 +32,7 @@ class Product:
 
 	def get_name(self):
 		if self.name:
-			return self.name.encode('utf-8')
+			return self.name
 
 		return None
 

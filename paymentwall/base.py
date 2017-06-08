@@ -84,5 +84,5 @@ class Paymentwall:
 	@classmethod
 	def hash(cls, string, library_type):
 		hashed_string = hashlib.md5() if library_type == 'md5' else hashlib.sha256()
-		hashed_string.update(string)
+		hashed_string.update(string.encode('utf-8'))
 		return hashed_string.hexdigest()
