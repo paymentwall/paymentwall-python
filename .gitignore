@@ -1,0 +1,3 @@
+.pypirc
+*.pyc
+test.py

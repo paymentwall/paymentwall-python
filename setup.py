@@ -6,9 +6,9 @@ def read(fname):
 
 setup(
 	name='paymentwall-python',
-	version='1.0.6',
+	version='1.0.7',
 	packages=['paymentwall'],
-	url='http://www.paymentwall.com',
+	url='https://github.com/paymentwall/paymentwall-python',
 	description='Paymentwall Python Library',
 	long_description=read('pypi_description.rst'),
 	license='MIT',
