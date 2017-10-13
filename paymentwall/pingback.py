@@ -55,6 +55,8 @@ class Pingback(Paymentwall):
 			signature_params = ['uid', 'currency', 'type', 'ref']
 		elif self.get_api_type() == self.API_GOODS:
 			signature_params = ['uid', 'goodsid', 'slength', 'speriod', 'type', 'ref']
+		elif self.get_api_type() == self.API_CHECKOUT:
+			signature_params = ['uid', 'goodsid', 'slength', 'speriod', 'type', 'ref']
 		else:
 			signature_params = ['uid', 'goodsid', 'type', 'ref']
 			self.parameters['sign_version'] = self.SIGNATURE_VERSION_2
@@ -89,9 +91,10 @@ class Pingback(Paymentwall):
 
 		if self.get_api_type() == self.API_VC:
 			required_params = ['uid', 'currency', 'type', 'ref', 'sig']
+		elif self.get_api_type() == self.API_CHECKOUT:
+			required_params = ['uid', 'goodsid', 'type', 'ref', 'sig']
 		else:
 			required_params = ['uid', 'goodsid', 'type', 'ref', 'sig']
-
 		for field in required_params:
 			if not field in self.parameters:
 				self.append_to_errors('Parameter ' + field + ' is missing')
