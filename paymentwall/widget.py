@@ -11,13 +11,14 @@ except ImportError:
 
 class Widget(Paymentwall):
 
-	BASE_URL = 'https://api.paymentwall.com/api'
-
 	def __init__(self, user_id, widget_code, products=[], extra_params={}):
 		self.user_id = user_id
 		self.widget_code = widget_code
 		self.extra_params = extra_params
 		self.products = products
+
+	def get_base_url(self):
+		return 'https://api.paymentwall.com/api' if self.get_api_type() != self.API_CHECKOUT else 'https://api.paymentwall.com'
 
 	def get_default_widget_signature(self):
 		return self.DEFAULT_SIGNATURE_VERSION if self.get_api_type() != self.API_CART else self.SIGNATURE_VERSION_2
@@ -34,6 +35,46 @@ class Widget(Paymentwall):
 		products_number = len(self.products)
 
 		if self.get_api_type() == self.API_GOODS:
+
+			if isinstance(self.products, list):
+
+				if products_number == 1:
+					product = self.products[0]
+
+					if isinstance(product, Product):
+						post_trial_product = None
+
+						if isinstance(product.get_trial_product(), Product):
+							post_trial_product = product
+							product = product.get_trial_product()
+
+						params['amount'] = product.get_amount()
+						params['currencyCode'] = product.get_currency_code()
+						params['ag_name'] = product.get_name()
+						params['ag_external_id'] = product.get_id()
+						params['ag_type'] = product.get_type()
+
+						if product.get_type() == Product.TYPE_SUBSCRIPTION:
+							params['ag_period_length'] = product.get_period_length()
+							params['ag_period_type'] = product.get_period_type()
+
+							if product.is_recurring():
+								params['ag_recurring'] = 1 if product.is_recurring() else 0
+
+								if post_trial_product:
+									params['ag_trial'] = 1
+									params['ag_post_trial_external_id'] = post_trial_product.get_id()
+									params['ag_post_trial_period_length'] = post_trial_product.get_period_length()
+									params['ag_post_trial_period_type'] = post_trial_product.get_period_type()
+									params['ag_post_trial_name'] = post_trial_product.get_name()
+									params['post_trial_amount'] = post_trial_product.get_amount()
+									params['post_trial_currencyCode'] = post_trial_product.get_currency_code()
+					else:
+						self.append_to_errors('Not a Product instance')
+				else:
+					self.append_to_errors('Only 1 product is allowed')
+
+		elif self.get_api_type() == self.API_CHECKOUT:
 
 			if isinstance(self.products, list):
 
@@ -95,7 +136,7 @@ class Widget(Paymentwall):
 		return params
 
 	def get_url(self):
-		return self.BASE_URL + '/' + self.build_controller(self.widget_code) + '?' + urlencode(self.get_params())
+		return self.get_base_url() + '/' + self.build_controller(self.widget_code) + '?' + urlencode(self.get_params())
 
 	def get_html_code(self, attributes={}):
 		default_attributes = {
@@ -121,6 +162,9 @@ class Widget(Paymentwall):
 		elif self.get_api_type() == self.API_GOODS:
 			if not flexible_call and not re.search(pattern, widget):
 				return self.GOODS_CONTROLLER
+		elif self.get_api_type() == self.API_CHECKOUT:
+			if not flexible_call and not re.search(pattern, widget):
+				return self.CHECKOUT_CONTROLLER
 		else:
 			return self.CART_CONTROLLER
 
