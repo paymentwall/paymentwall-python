@@ -12,6 +12,7 @@ class Paymentwall:
 	VC_CONTROLLER = 'ps'
 	GOODS_CONTROLLER = 'subscription'
 	CART_CONTROLLER = 'cart'
+	BASE = 'https://api.paymentwall.com/api'
 
 	DEFAULT_SIGNATURE_VERSION = 3
 	SIGNATURE_VERSION_1 = 1
@@ -47,6 +48,10 @@ class Paymentwall:
 	@classmethod
 	def get_secret_key(cls):
 		return cls.secret_key
+
+	@classmethod
+	def is_test(cls):
+		return cls.app_key.find('t_') != -1
 
 	@classmethod
 	def append_to_errors(cls, err):
@@ -86,3 +91,24 @@ class Paymentwall:
 		hashed_string = hashlib.md5() if library_type == 'md5' else hashlib.sha256()
 		hashed_string.update(string.encode('utf-8'))
 		return hashed_string.hexdigest()
+
+	@classmethod
+	def request_calculate_signature(self, params, secret, version):
+		base_string = ''
+		is_array = lambda var: isinstance(var, (list, tuple))
+
+		params = sorted(params.items())
+
+		for i in range(len(params)):
+			if is_array(params[i][1]):
+				for key in range(len(params[i][1])):
+					base_string += str(params[i][0]) + '[' + str(key) + ']=' + str(params[i][1][key])
+			else:
+				base_string += str(params[i][0]) + '=' + str(params[i][1])
+
+		base_string += secret
+
+		if version == self.SIGNATURE_VERSION_2:
+			return self.hash(base_string, 'md5')
+
+		return self.hash(base_string, 'sha256')
