@@ -2,9 +2,9 @@ from paymentwall.base import Paymentwall
 from paymentwall.product import Product
 
 try:
-    import collections
+    from collections import OrderedDict
 except ImportError:
-    import ordereddict
+    from ordereddict import OrderedDict
 
 
 class Pingback(Paymentwall):
@@ -33,9 +33,7 @@ class Pingback(Paymentwall):
         if self.is_parameters_valid():
             if self.is_ip_address_valid() or skip_ip_whitelist_check:
                 if self.is_signature_valid():
-
                     validated = True
-
                 else:
                     self.append_to_errors('Wrong signature')
             else:
@@ -46,10 +44,7 @@ class Pingback(Paymentwall):
         return validated
 
     def is_signature_valid(self):
-        try:
-            signature_params_to_sign = collections.OrderedDict()
-        except StandardError:
-            signature_params_to_sign = ordereddict.OrderedDict()
+        signature_params_to_sign = OrderedDict()
 
         if self.get_api_type() == self.API_VC:
             signature_params = ['uid', 'currency', 'type', 'ref']
@@ -67,7 +62,8 @@ class Pingback(Paymentwall):
             signature_params_to_sign = self.parameters
 
         signature_calculated = self.calculate_signature(
-            signature_params_to_sign, self.get_secret_key(), self.parameters['sign_version'])
+            signature_params_to_sign, self.get_secret_key(), self.parameters['sign_version']
+        )
 
         signature = self.parameters['sig'] if 'sig' in self.parameters else None
 
@@ -100,7 +96,7 @@ class Pingback(Paymentwall):
         return errors_number == 0
 
     def get_parameter(self, param):
-        return self.parameters[param] if param in self.parameters else None
+        return self.parameters.get(param, None)
 
     def get_type(self):
         if 'type' in self.parameters:
@@ -144,12 +140,12 @@ class Pingback(Paymentwall):
         )
 
     def get_products(self):
-        result = []
         product_ids = self.get_parameter('goodsid')
 
-        if type(product_ids).__name__ == 'list' and len(product_ids) > 0:
-            for product_id in range(len(product_ids)):
-                result.append(Product(product_ids[product_id]))
+        if isinstance(product_ids, list) and product_ids:
+            result = [Product(product_id) for product_id in product_ids]
+        else:
+            result = []
 
         return result
 

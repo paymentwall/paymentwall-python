@@ -66,9 +66,8 @@ class Paymentwall:
     @classmethod
     def is_empty(cls, dictionary, key):
         if isinstance(dictionary, dict):
-            if key in dictionary:
-                if dictionary[key]:
-                    return False
+            if key in dictionary and dictionary[key]:
+                return False
             return True
 
     @classmethod

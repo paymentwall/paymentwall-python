@@ -136,12 +136,12 @@ class Widget(Paymentwall):
         else:
             params = sorted(params.items())
 
-            for i in range(len(params)):
-                if isinstance(params[i][1], (list, tuple)):
-                    for key in range(len(params[i][1])):
-                        base_string += str(params[i][0]) + '[' + str(key) + ']=' + str(params[i][1][key])
+            for param in params:
+                if isinstance(param[1], (list, tuple)):
+                    for key in range(len(param[1])):
+                        base_string += str(param[0]) + '[' + str(key) + ']=' + str(param[1][key])
                 else:
-                    base_string += str(params[i][0]) + '=' + str(params[i][1])
+                    base_string += str(param[0]) + '=' + str(param[1])
 
             base_string += secret
 

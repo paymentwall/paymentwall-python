@@ -8,9 +8,8 @@ class Product:
     PERIOD_TYPE_MONTH = 'month'
     PERIOD_TYPE_YEAR = 'year'
 
-    def __init__(
-            self, product_id=None, amount=0.0, currency_code=None, name=None, product_type=TYPE_FIXED, period_length=0,
-            period_type=None, recurring=False, trial_product=object):
+    def __init__(self, product_id=None, amount=0.0, currency_code=None, name=None, product_type=TYPE_FIXED,
+                 period_length=0, period_type=None, recurring=False, trial_product=object):
         self.product_id = product_id
         self.amount = round(amount, 2)
         self.currency_code = currency_code
@@ -31,10 +30,7 @@ class Product:
         return self.currency_code
 
     def get_name(self):
-        if self.name:
-            return self.name
-
-        return None
+        return self.name or None
 
     def get_type(self):
         return self.product_type
