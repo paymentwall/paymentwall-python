@@ -120,13 +120,13 @@ class Pingback(Paymentwall):
         try:
             return int(self.parameters['slength'])
         except ValueError:
-            return None
+            return 0
 
     def get_product_period_type(self):
         try:
             return int(self.parameters['speriod'])
         except ValueError:
-            return 0
+            return None
 
     def get_product(self):
         return Product(
