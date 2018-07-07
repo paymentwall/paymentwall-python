@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name='paymentwall-python',
-    version='1.0.7',
+    version='1.0.8',
     packages=['paymentwall'],
     url='https://github.com/paymentwall/paymentwall-python',
     description='Paymentwall Python Library',
