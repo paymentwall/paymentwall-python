@@ -1,5 +1,4 @@
 import os
-#from distutils.core import setup
 from setuptools import setup
 
 
@@ -9,12 +8,13 @@ def read(fname):
 
 setup(
     name='paymentwall-python',
-    version='1.0.8',
+    version='1.0.9',
     packages=['paymentwall'],
     url='https://github.com/paymentwall/paymentwall-python',
     description='Paymentwall Python Library',
     long_description=read('pypi_description.rst'),
     license='MIT',
     author='Paymentwall Team',
-    author_email='devsupport@paymentwall.com'
+    author_email='devsupport@paymentwall.com',
+    python_requires=">=3.6",
 )

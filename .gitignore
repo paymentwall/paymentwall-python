@@ -1,3 +1,4 @@
 .pypirc
 *.pyc
 test.py
+venv
